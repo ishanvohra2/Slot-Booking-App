@@ -22,6 +22,8 @@ public class SlotListRepository {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private ArrayList<SlotItem> slotList = new ArrayList<>();
 
+    MutableLiveData<ArrayList<SlotItem>> slots = new MutableLiveData<>();
+
     public static SlotListRepository getInstance(Context context){
         if(instance == null){
             instance = new SlotListRepository();
@@ -31,7 +33,7 @@ public class SlotListRepository {
     }
 
     public MutableLiveData<ArrayList<SlotItem>> getSlotLiveData(String date){
-        final MutableLiveData<ArrayList<SlotItem>> slots = new MutableLiveData<>();
+        slots = new MutableLiveData<>();
 
         DocumentReference documentReference = firebaseFirestore.collection("slots").document(date);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

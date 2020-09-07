@@ -26,4 +26,10 @@
         app:textColorSelected="#FFFF"
         app:selectorColor="#c62828" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_activity_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/available_slots_item"/>
+
 </LinearLayout>
