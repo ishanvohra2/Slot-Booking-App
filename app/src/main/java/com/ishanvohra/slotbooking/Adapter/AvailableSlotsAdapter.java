@@ -18,6 +18,11 @@ public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAd
 
     private Context context;
     private ArrayList<SlotItem> dataSet;
+    private BookSlotListener bookSlotListener;
+
+    public interface BookSlotListener{
+        void bookSlot(String time);
+    }
 
     public void setSlots(ArrayList<SlotItem> dataSet){
         this.dataSet = dataSet;
@@ -32,9 +37,10 @@ public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAd
         }
     }
 
-    public AvailableSlotsAdapter(Context context, ArrayList<SlotItem> dataSet){
+    public AvailableSlotsAdapter(Context context, ArrayList<SlotItem> dataSet, BookSlotListener bookSlotListener){
         this.dataSet = dataSet;
         this.context = context;
+        this.bookSlotListener = bookSlotListener;
     }
 
     @NonNull
@@ -48,8 +54,15 @@ public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAd
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        SlotItem item = dataSet.get(position);
+        final SlotItem item = dataSet.get(position);
         holder.timeTv.setText(item.getTime());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookSlotListener.bookSlot(item.getTime());
+            }
+        });
     }
 
     @Override

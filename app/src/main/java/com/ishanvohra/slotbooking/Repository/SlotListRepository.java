@@ -1,6 +1,7 @@
 package com.ishanvohra.slotbooking.Repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.ishanvohra.slotbooking.Model.BookingItem;
 import com.ishanvohra.slotbooking.Model.SlotItem;
 
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class SlotListRepository {
     private ArrayList<SlotItem> slotList = new ArrayList<>();
 
     MutableLiveData<ArrayList<SlotItem>> slots = new MutableLiveData<>();
+
+    private static String TAG = "SlotListRepository";
 
     public static SlotListRepository getInstance(Context context){
         if(instance == null){
@@ -43,8 +47,9 @@ public class SlotListRepository {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if(documentSnapshot != null && documentSnapshot.exists()){
 
-                        Map<String, Object> slotItems = documentSnapshot.getData();
                         slotList.clear();
+                        Map<String, Object> slotItems = documentSnapshot.getData();
+                        Log.d(TAG, "onComplete: " + slotItems);
 
                         for(Map.Entry<String, Object> entry : slotItems.entrySet()){
                             SlotItem slotItem = new SlotItem();
@@ -59,6 +64,27 @@ public class SlotListRepository {
         });
 
         return slots;
+    }
+
+    public String bookSlot(final String date,final String time){
+        final String[] result = {""};
+
+        BookingItem bookingItem = new BookingItem();
+        bookingItem.setDate(date);
+        bookingItem.setTime(time);
+
+        DocumentReference documentReference = firebaseFirestore.collection("bookedSlots").document(date);
+        documentReference.set(bookingItem).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG, "onComplete: Slot booked " + date + ", " + time);
+                    result[0] = "Success";
+                }
+            }
+        });
+
+        return result[0];
     }
 
 }
