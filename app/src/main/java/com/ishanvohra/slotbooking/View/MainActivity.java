@@ -68,7 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 dateString = date.get(Calendar.DAY_OF_MONTH) + "-" + (date.get(Calendar.MONTH) + 1) + "-" + date.get(Calendar.YEAR);
                 Log.d(TAG, "onDateSelected: " + dateString);
 
-                viewModel.init(MainActivity.this, dateString);
+                adapter.setSlots(new ArrayList<SlotItem>());
+                adapter.notifyDataSetChanged();
+
+                viewModel.init(MainActivity.this);
+                viewModel.setDate(dateString);
                 viewModel.getLiveData().observe(MainActivity.this, new Observer<ArrayList<SlotItem>>() {
                     @Override
                     public void onChanged(ArrayList<SlotItem> slotItems) {

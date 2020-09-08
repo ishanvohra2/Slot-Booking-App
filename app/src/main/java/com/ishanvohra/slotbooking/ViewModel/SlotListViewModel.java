@@ -16,13 +16,18 @@ import java.util.logging.LogRecord;
 public class SlotListViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<SlotItem>> slotLiveData;
+    private String date;
 
-    public void init(Context context, String date){
+    public void init(Context context){
         if(slotLiveData != null){
             return;
         }
 
-        slotLiveData = SlotListRepository.getInstance(context).getSlotLiveData( date);
+        slotLiveData = SlotListRepository.getInstance(context).getSlotLiveData(date);
+    }
+
+    public void setDate(String date){
+        this.date = date;
     }
 
     public MutableLiveData<ArrayList<SlotItem>> getLiveData(){
