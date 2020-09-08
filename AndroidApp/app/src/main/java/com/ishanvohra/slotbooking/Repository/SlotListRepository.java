@@ -12,13 +12,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ishanvohra.slotbooking.Model.BookingItem;
 import com.ishanvohra.slotbooking.Model.Notification;
 import com.ishanvohra.slotbooking.Model.SlotItem;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class SlotListRepository {
 
@@ -28,6 +34,7 @@ public class SlotListRepository {
     private ArrayList<SlotItem> slotList = new ArrayList<>();
 
     MutableLiveData<ArrayList<SlotItem>> slots = new MutableLiveData<>();
+    MutableLiveData<ArrayList<BookingItem>> bookedSlots = new MutableLiveData<>();
 
     private static String TAG = "SlotListRepository";
 
@@ -67,6 +74,30 @@ public class SlotListRepository {
         });
 
         return slots;
+    }
+
+    public MutableLiveData<ArrayList<BookingItem>> getBookedSlots(){
+        bookedSlots = new MutableLiveData<>();
+
+        firebaseFirestore.collection("bookedSlots").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+
+                    ArrayList<BookingItem> items = new ArrayList<>();
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        BookingItem item = new BookingItem();
+                        item.setDate(document.getString("date"));
+                        item.setTime(document.getString("time"));
+                        items.add(item);
+                    }
+
+                    Log.d(TAG, "onEvent: Booked slots" + items.get(0).getTime());
+                }
+            }
+        });
+
+        return bookedSlots;
     }
 
     public String bookSlot(final String date,final String time){
