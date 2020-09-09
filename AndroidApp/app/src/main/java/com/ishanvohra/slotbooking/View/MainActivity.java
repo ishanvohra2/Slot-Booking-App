@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements AvailableSlotsAda
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                stopService(new Intent(MainActivity.this, BackgroundService.class))
+                stopService(new Intent(MainActivity.this, BackgroundService.class));
 
                 viewModel.bookSlot(time);
                 Dialog dialog = onCreateDialog(time);
