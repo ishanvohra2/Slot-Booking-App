@@ -14,6 +14,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,20 +25,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.ishanvohra.slotbooking.Adapter.AvailableSlotsAdapter;
 import com.ishanvohra.slotbooking.Model.SlotItem;
 import com.ishanvohra.slotbooking.R;
+import com.ishanvohra.slotbooking.Service.BackgroundService;
 import com.ishanvohra.slotbooking.ViewModel.SlotListViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Map;
+import java.util.Date;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -52,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements AvailableSlotsAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        startService(new Intent(this, BackgroundService.class));
 
         final ProgressBar progressBar = findViewById(R.id.progressbar);
 
@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements AvailableSlotsAda
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                stopService(new Intent(MainActivity.this, BackgroundService.class))
+
                 viewModel.bookSlot(time);
                 Dialog dialog = onCreateDialog(time);
                 dialog.show();
@@ -130,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements AvailableSlotsAda
                 int width = metrics.widthPixels;
                 int height = metrics.heightPixels;
                 dialog.getWindow().setLayout(width, height * 2 / 3);
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("slotBooked", true);
+                editor.apply();
             }
         });
         builder.setNegativeButton("Cancel", null);

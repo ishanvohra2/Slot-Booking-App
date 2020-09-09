@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidApp-Slot_Booking_App.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidApp-Slot_Booking_App.iml" group="Slot_Booking_App" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Slot Booking App-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Slot Booking App-app.iml" group="Slot Booking App/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Slot_Booking_App.iml" filepath="$PROJECT_DIR$/.idea/modules/Slot_Booking_App.iml" group="Slot_Booking_App" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Slot Booking App/app" />
     </modules>

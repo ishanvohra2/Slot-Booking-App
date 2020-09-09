@@ -25,17 +25,10 @@
         android:layout_gravity="center"
         android:visibility="gone"/>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/booked_activity_swipe_layout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/booked_activity_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/booked_activity_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/booked_item"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/booked_item"/>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ishanvohra.slotbooking.Adapter.BookedSlotAdapter;
 import com.ishanvohra.slotbooking.Model.BookingItem;
@@ -53,22 +54,11 @@ public class ViewBookingsActivity extends AppCompatActivity {
                 Log.d(TAG, "onChanged: Booked slots loaded");
                 adapter.setSlots(bookingItems);
                 adapter.notifyDataSetChanged();
-            }
-        });
 
-        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.booked_activity_swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                viewModel.getLiveData().observe(ViewBookingsActivity.this, new Observer<ArrayList<BookingItem>>() {
-                    @Override
-                    public void onChanged(ArrayList<BookingItem> bookingItems) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        Log.d(TAG, "onChanged: Booked slots loaded");
-                        adapter.setSlots(bookingItems);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+                if(bookingItems.isEmpty()){
+                    Toast.makeText(ViewBookingsActivity.this, "Empty List", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

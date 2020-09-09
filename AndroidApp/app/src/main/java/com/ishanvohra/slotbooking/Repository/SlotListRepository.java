@@ -1,6 +1,7 @@
 package com.ishanvohra.slotbooking.Repository;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -79,7 +80,8 @@ public class SlotListRepository {
     public MutableLiveData<ArrayList<BookingItem>> getBookedSlots(){
         bookedSlots = new MutableLiveData<>();
 
-        firebaseFirestore.collection("bookedSlots").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection("bookedSlots").get().addOnCompleteListener(
+                new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
@@ -91,8 +93,7 @@ public class SlotListRepository {
                         item.setTime(document.getString("time"));
                         items.add(item);
                     }
-
-                    Log.d(TAG, "onEvent: Booked slots" + items.get(0).getTime());
+                    bookedSlots.setValue(items);
                 }
             }
         });

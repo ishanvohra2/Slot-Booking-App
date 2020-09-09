@@ -27,10 +27,10 @@ public class BookedSlotAdapter extends RecyclerView.Adapter<BookedSlotAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView timeTv, dateTv;
 
-        public MyViewHolder(View item){
-            super(item);
-            timeTv = item.findViewById(R.id.booked_item_time_tv);
-            dateTv = item.findViewById(R.id.booked_item_date_tv);
+        public MyViewHolder(View itemView){
+            super(itemView);
+            timeTv = itemView.findViewById(R.id.booked_item_time_tv);
+            dateTv = itemView.findViewById(R.id.booked_item_date_tv);
         }
     }
 
